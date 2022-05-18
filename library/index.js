@@ -1,5 +1,4 @@
-const booksList = document.querySelector('.booksList');
-
+const booksList = document.querySelector(".booksList");
 let myLibrary = [];
 
 function Book(title, author, pages, read) {
@@ -14,18 +13,44 @@ function Book(title, author, pages, read) {
   };
 }
 
+// Add new book to myLibrary array
 function addBookToLibrary(book) {
-  myLibrary.push(book);
+  if (book) myLibrary.push(book);
 }
-
-for (let i = 1; i <= 5; i++) {
- addBookToLibrary( new Book(`Title ${i}`, 'Nico', Math.floor(Math.random() * 100), true) )
-}
-
-console.log(myLibrary)
 
 // display books list
 
-myLibrary.forEach(book => {
-  booksList.innerHTML += `<p>${book.info()}</p>`
+const DisplayBooksList = () => {
+  let newBook = myLibrary[myLibrary.length -1]
+  console.log(myLibrary.length);
+    if ( myLibrary[myLibrary.length - 1]  )  booksList.innerHTML += `<p>${newBook.info()}</p>`;
+};
+
+DisplayBooksList();
+
+// Form
+
+let form = document.querySelector(".addBook");
+
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  new FormData(form);
+});
+
+// formdata handler to retrieve data
+
+form.addEventListener("formdata", (e) => {
+  console.log("formdata fired");
+
+  // Get the form data from the event object
+  let data = e.formData;
+  let inputData = [];
+  for (const value of data.values()) {
+    inputData.push(value);
+  }
+  if (!inputData.includes('')) addBookToLibrary(new Book(...inputData));
+  DisplayBooksList();
+  form.reset()
+  inputData = [];
+  console.log("Form Cleared");
 });
